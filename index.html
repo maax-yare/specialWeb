@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For My Favorite Person ❤️</title>
+  <link href="https://googleapis.com" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ffe6eb 0%, #ffb3c6 100%);
+      color: #4a1525;
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    /* Floating Hearts Background */
+    .heart-bg {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .floating-heart {
+      position: absolute;
+      bottom: -50px;
+      color: rgba(255, 77, 109, 0.35);
+      animation: floatUp linear infinite;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Main Card */
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 600px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      padding: 40px 30px;
+      box-shadow: 0 15px 35px rgba(214, 51, 108, 0.2);
+      text-align: center;
+    }
+
+    h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 3.2rem;
+      color: #d6336c;
+      margin-bottom: 10px;
+    }
+    .subtitle { font-size: 1rem; color: #7a2841; margin-bottom: 30px; }
+
+    /* Counter Box */
+    .counter-box {
+      background: #fff0f3;
+      border: 2px dashed #ff758f;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+    .counter-number {
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: #c9184a;
+    }
+
+    /* Interactive Love Letter */
+    .letter-btn, .yes-btn, .no-btn {
+      background: #ff4d6d;
+      color: white;
+      border: none;
+      padding: 12px 28px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s;
+      box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+    }
+    .letter-btn:hover, .yes-btn:hover { background: #c9184a; transform: scale(1.05); }
+
+    .love-letter {
+      display: none;
+      margin-top: 20px;
+      padding: 25px;
+      background: #fff;
+      border-radius: 16px;
+      text-align: left;
+      line-height: 1.7;
+      border-left: 5px solid #ff4d6d;
+      animation: fadeIn 0.6s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Playful Question Section */
+    .question-box { margin-top: 35px; padding-top: 25px; border-top: 1px solid #ffccd5; }
+    .question-box h2 { font-family: 'Dancing Script', cursive; font-size: 2.2rem; color: #c9184a; margin-bottom: 20px; }
+    .btn-group { display: flex; justify-content: center; gap: 20px; position: relative; min-height: 50px; }
+    .no-btn { background: #8c5362; box-shadow: none; position: relative; }
+    #celebration { display: none; margin-top: 20px; font-weight: 600; color: #c9184a; font-size: 1.2rem; }
+  </style>
+</head>
+<body>
+
+  <div class="heart-bg" id="heartBg"></div>
+
+  <div class="container">
+    <!-- CUSTOMIZE NAME HERE -->
+    <h1>Hey Nimco ❤️</h1>
+    <p class="subtitle">I made a little corner of the internet just for you.</p>
+
+    <!-- CUSTOMIZE START DATE IN SCRIPT BELOW -->
+    <div class="counter-box">
+      <p>We've been making memories together for</p>
+      <div class="counter-number" id="daysCount">0 Days</div>
+    </div>
+
+    <!-- LOVE LETTER SECTION -->
+    <button class="letter-btn" onclick="toggleLetter()">💌 Open My Letter to You</button>
+    <div class="love-letter" id="loveLetter">
+      <p>My beloved <strong>Nimco,</strong>,</p><br>
+      <p>There are moments when the distance feels heavy, but then I remember that love travels farther than any road or ocean. It reaches across every mile and finds you, just as your love finds me.</p><br>
+      <p>You are the quiet strength in my heart, the gentle light that guides me through long days. When I think of you, the world feels softer, kinder, and full of hope. I imagine the day I will see your smile again, and that thought alone carries me forward.</p><br>
+      <p>No matter how far away you are, you remain the closest person to my soul. I am grateful for you, for your patience, for your kindness, and for the love that binds us even when we cannot hold each other.</p><br>
+      <p>I love you more than distance can measure.</p><br>
+
+      <p>Forever yours,<br><strong>Mohamed</strong></p>
+    </div>
+
+    <!-- PLAYFUL QUESTION SECTION -->
+    <div class="question-box">
+      <h2>Will you merry me malabo?</h2>
+      <div class="btn-group">
+        <button class="yes-btn" onclick="sayYes()">Yes, of course! 💖</button>
+        <button class="no-btn" id="noBtn" onmouseover="dodgeButton()" onclick="dodgeButton()">No</button>
+      </div>
+      <div id="celebration">🎉 Yay!! Best decision ever! Get ready for Big Belly! 🥰</div>
+    </div>
+  </div>
+
+  <script>
+    // 1. SET YOUR ANNIVERSARY / START DATE HERE (YYYY-MM-DD)
+    const startDate = new Date("2026-07-27"); 
+    const today = new Date();
+    const diffTime = Math.abs(today - startDate);
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    document.getElementById("daysCount").innerText = diffDays + " Days";
+
+    // 2. TOGGLE LOVE LETTER
+    function toggleLetter() {
+      const letter = document.getElementById("loveLetter");
+      letter.style.display = letter.style.display === "block" ? "none" : "block";
+    }
+
+    // 3. DODGING "NO" BUTTON
+    function dodgeButton() {
+      const btn = document.getElementById("noBtn");
+      const x = Math.floor(Math.random() * 200) - 100;
+      const y = Math.floor(Math.random() * 120) - 60;
+      btn.style.transform = `translate(${x}px, ${y}px)`;
+    }
+
+    // 4. YES CELEBRATION
+    function sayYes() {
+      document.getElementById("celebration").style.display = "block";
+      document.getElementById("noBtn").style.display = "none";
+    }
+
+    // 5. FLOATING HEARTS GENERATOR
+    const heartBg = document.getElementById("heartBg");
+    setInterval(() => {
+      const heart = document.createElement("div");
+      heart.classList.add("floating-heart");
+      heart.innerHTML = "❤️";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = (Math.random() * 20 + 14) + "px";
+      heart.style.animationDuration = (Math.random() * 4 + 4) + "s";
+      heartBg.appendChild(heart);
+      setTimeout(() => heart.remove(), 8000);
+    }, 400);
+  </script>
+</body>
+</html>
